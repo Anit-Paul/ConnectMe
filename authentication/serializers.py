@@ -17,3 +17,12 @@ class userSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])  # hashes the password
         user.save()
         return user
+    def update(self, instance, validated_data):
+        password = validated_data.pop('password', None)
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value) #for updating the other attributes
+
+        if password:
+            instance.set_password(password)  # hashes the password
+        instance.save()
+        return instance

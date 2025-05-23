@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import userSerializer
 from django.contrib.auth import authenticate
+from .models import MyUser
 class signin(APIView):
     def post(self, request):
         serializer = userSerializer(data=request.data)
@@ -22,3 +23,15 @@ class login(APIView):
             return Response({"message":"Login Successful"})
         else:
             return Response({"message":"Login failed"})
+        
+    def patch(self, request, *args, **kwargs):
+        try:
+            user = MyUser.objects.get(email=request.data.get("email"))
+        except MyUser.DoesNotExist:
+            return Response({"error": "User not found"}, status=404)
+
+        serializer = userSerializer(user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)  # <-- return here
+        return Response(serializer.errors, status=400)  # <-- and return here
