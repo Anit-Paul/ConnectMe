@@ -5,16 +5,23 @@ from rest_framework import status
 from .serializers import userSerializer
 from django.contrib.auth import authenticate
 from .models import MyUser
-class signin(APIView):
+from django.shortcuts import render
+from rest_framework.parsers import MultiPartParser, FormParser
+
+def signin(request):
+    return render(request,'account/index.html')
+class signinAPI(APIView):
+    parser_classes = (MultiPartParser, FormParser)
     def post(self, request):
-        serializer = userSerializer(data=request.data)
+        serializer = userSerializer(data=request.data)  # add files here
         if serializer.is_valid():
-            serializer.save()  # Save the new user instance
+            serializer.save()  
             return Response({"data": serializer.data, "message": "Data saved successfully!"}, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class login(APIView):
+
+class loginAPI(APIView):
     def post(self,request):
         email=request.data["email"]
         password=request.data["password"]
