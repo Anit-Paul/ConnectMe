@@ -10,6 +10,9 @@ from rest_framework.parsers import MultiPartParser, FormParser
 
 def signin(request):
     return render(request,'account/index.html')
+
+def login(request):
+    return render(request,'account/login.html')
 class signinAPI(APIView):
     parser_classes = (MultiPartParser, FormParser)
     def post(self, request):

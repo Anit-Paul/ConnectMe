@@ -1,0 +1,69 @@
+{% extends 'account/base.html' %}
+
+{% block title %}
+Login
+{% endblock title %}
+
+{% block style %}
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .form-container {
+        margin-top: 10%;
+        padding: 40px;
+        background-color: #ffffff;
+        border-radius: 15px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .links {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 15px;
+    }
+
+    .links a {
+        color: #0d6efd;
+        text-decoration: none;
+        font-size: 0.9rem;
+    }
+
+    .links a:hover {
+        text-decoration: underline;
+    }
+</style>
+{% endblock style %}
+
+{% block body %}
+<div class="form-container">
+    <h2>Login</h2>
+    <form method="POST" action="{% url 'loginAPI' %}">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label class="form-label">Email address</label>
+            <input type="email" class="form-control" placeholder="name@example.com" name="email" required />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input type="password" class="form-control" placeholder="Password" name="password" required />
+        </div>
+        <div class="links">
+            <a href="#">Forget password?</a>
+            <a href="{% url 'signin' %}">Don't have an account? Sign in</a>
+        </div>
+        <div class="d-grid mt-3">
+            <button type="submit" class="btn btn-primary">Login</button>
+        </div>
+    </form>
+</div>
+{% endblock body %}
