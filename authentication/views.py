@@ -7,6 +7,7 @@ from django.contrib.auth import authenticate
 from .models import MyUser
 from django.shortcuts import render
 from rest_framework.parsers import MultiPartParser, FormParser
+from .mail import Mail
 
 def signin(request):
     return render(request,'account/index.html')
@@ -18,7 +19,12 @@ def forget_password(request):
     return render(request,'account/forgetpassword.html')
 
 def verify_otp(request):
-    return render(request,'account/otp.html')
+    email = request.POST.get('email')
+    a=Mail()
+    if a.send_email(email):
+        return render(request,'account/otp.html')
+    else:
+        return render(request,'account/forgetpassword.html')
 
 def set_new_password(request):
     return render(request,'account/newpassword.html')
