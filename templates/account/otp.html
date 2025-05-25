@@ -1,0 +1,45 @@
+{% extends 'account/base.html' %}
+
+{% block title %}Verify OTP{% endblock title %}
+
+{% block style %}
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .otp-container {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .form-box {
+        background-color: #fff;
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 500px;
+    }
+    h2 {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+</style>
+{% endblock style %}
+
+{% block body %}
+<div class="otp-container">
+    <div class="form-box">
+        <h2>Verify OTP</h2>
+        <form method="POST" action="{% url 'otp_verification' %}">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="otp" class="form-label">Enter the OTP sent to your email</label>
+                <input type="text" class="form-control" id="otp" name="otp" required />
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Verify</button>
+        </form>
+    </div>
+</div>
+{% endblock body %}

@@ -13,6 +13,18 @@ def signin(request):
 
 def login(request):
     return render(request,'account/login.html')
+
+def forget_password(request):
+    return render(request,'account/forgetpassword.html')
+
+def verify_otp(request):
+    return render(request,'account/otp.html')
+
+def set_new_password(request):
+    return render(request,'account/newpassword.html')
+
+def otp_verification(request):
+    return render(request,'account/newpassword.html')
 class signinAPI(APIView):
     parser_classes = (MultiPartParser, FormParser)
     def post(self, request):
