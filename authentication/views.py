@@ -9,6 +9,7 @@ from django.shortcuts import render
 from rest_framework.parsers import MultiPartParser, FormParser
 from .mail import Mail
 from rest_framework.authtoken.models import Token
+from django.contrib.auth import login as django_login
 
 class otpVerification:
     def __init__(self):
@@ -63,6 +64,7 @@ class loginAPI(APIView):
         password=request.data["password"]
         user=authenticate(email=email,password=password)
         if user is not None:
+            django_login(request, user)  # ✅ This creates a session
             token, _ = Token.objects.get_or_create(user=user)
             return Response({"message":"Login Successful",'token':token.key})
         else:
