@@ -1,6 +1,6 @@
 from rest_framework import serializers 
 from .models import MyUser
-
+from rest_framework.authtoken.models import Token
 class userSerializer(serializers.ModelSerializer):
     class Meta:
         model = MyUser
@@ -27,7 +27,7 @@ class userSerializer(serializers.ModelSerializer):
         )
         user.set_password(validated_data['password'])
         user.save()
-
+        token, _ = Token.objects.get_or_create(user=user)  # ✅ Now create a token safely
         if groups:
             user.groups.set(groups)
 

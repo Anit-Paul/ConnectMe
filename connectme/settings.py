@@ -40,8 +40,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     #added
     'rest_framework',
-    'authentication'
+    'authentication',
+    'rest_framework.authtoken'
 ]
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',  # Enable Token Authentication
+    )
+}
 AUTH_USER_MODEL = 'authentication.MyUser'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

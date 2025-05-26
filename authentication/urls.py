@@ -16,13 +16,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from .views import signinAPI,loginAPI,signin,login,forget_password,verify_otp,set_new_password,otp_verification
+from .views import signinAPI,loginAPI,signin,login,forget_password,set_new_password,otpVerification,forgetPasswordAPI
+otp=otpVerification()
 urlpatterns = [
     path("",login,name="login"),
     path("signin/",signin,name="signin"),
     path("forget_password/",forget_password,name="forget_password"),
-    path("verify_otp/",verify_otp,name="verify_otp"),
-    path("otp_verification/",otp_verification,name="otp_verification"),
+    path("verify_otp/",otp.verify_otp,name="verify_otp"),
+    path("otp_verification/",otp.otp_verification,name="otp_verification"),
+    path("forgetPassword/",forgetPasswordAPI.as_view(),name="forgetPassword"),
     path("set_new_password/",set_new_password,name="set_new_password"),
     path("signinAPI/",signinAPI.as_view(),name="signinAPI"),
     path("loginAPI/",loginAPI.as_view(),name="loginAPI")

@@ -32,10 +32,10 @@ ConnectMe Team
                 connection.starttls()
                 connection.login(self.sender, self.password)
                 connection.send_message(msg)
-                return True
+                return True,otp
         except Exception as e:
             print("Error sending email:", e)
-            return False
+            return False,otp
 
     def get_otp(self):
         s=""
