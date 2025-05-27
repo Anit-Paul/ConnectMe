@@ -21,6 +21,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('social_features/',include('social_features.urls')),
     path("",include('authentication.urls')),
     path("home/",include('home.urls')),
     path("auth/",include('authentication.urls'))

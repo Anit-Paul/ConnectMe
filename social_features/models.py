@@ -10,4 +10,4 @@ class Follow(models.Model):
         unique_together = ('follower', 'following')  # Prevent duplicates
 
     def __str__(self):
-        return f"{self.follower} follows {self.following}"
+        return f"{self.follower.username} follows {self.following.username}"
