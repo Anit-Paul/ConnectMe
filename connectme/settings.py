@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'authentication',
     'home',
+    'social_features',
     'rest_framework.authtoken'
 ]
 REST_FRAMEWORK = {
