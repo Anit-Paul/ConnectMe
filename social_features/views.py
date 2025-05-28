@@ -34,7 +34,7 @@ class PostAPI(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def get(self, request):
-        posts = Post.objects.all().order_by('-created_at')
+        posts = Post.objects.filter(author=request.user).order_by('-created_at')
         serializer = PostSerializers(posts, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
         
