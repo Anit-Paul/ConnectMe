@@ -22,12 +22,10 @@ class profileAPI(APIView):
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
     def get(self, request):
-        user = MyUser.objects.filter(email=request.user.email)
-        posts = Post.objects.filter(author=request.user)
-        return Response({
-            "user": userSerializer(user, many=True).data,
-            "posts": PostSerializers(posts, many=True).data
-        })
+        user=request.user
+        posts=user.posts.all()
+        all_user=MyUser.objects.exclude(email=user.email)
+        return render(request, 'home/my_profile.html', {'user': user, 'posts': posts,'follows':all_user})
 
 class updateAPI(APIView):
     authentication_classes = [SessionAuthentication, TokenAuthentication]
