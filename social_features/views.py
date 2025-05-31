@@ -38,3 +38,5 @@ class PostAPI(APIView):
         serializer = PostSerializers(posts, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
         
+
+# Create your views here.

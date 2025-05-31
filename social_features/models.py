@@ -26,3 +26,5 @@ class Post(models.Model):
         related_name='liked_posts', 
         blank=True
     )
+
+# Create your models here.
