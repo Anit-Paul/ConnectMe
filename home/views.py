@@ -13,8 +13,10 @@ class homeAPI(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        
-        return render(request, 'home/index.html', {'user': request.user})
+        user=request.user
+        posts=user.posts.all()
+        all_user=MyUser.objects.exclude(email=user.email)
+        return render(request, 'home/index.html', {'user': user, 'posts': posts,'follows':all_user})
 
 class profileAPI(APIView):
     authentication_classes = [SessionAuthentication, TokenAuthentication]

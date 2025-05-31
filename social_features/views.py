@@ -1,5 +1,4 @@
 from django.shortcuts import render
-<<<<<<< HEAD
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from . serializers import FollowSerializers,PostSerializers
@@ -39,7 +38,5 @@ class PostAPI(APIView):
         serializer = PostSerializers(posts, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
         
-=======
 
 # Create your views here.
->>>>>>> 53196f0 (social features app added)
