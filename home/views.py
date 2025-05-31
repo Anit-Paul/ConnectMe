@@ -13,6 +13,7 @@ class homeAPI(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
+        
         return render(request, 'home/index.html', {'user': request.user})
 
 class profileAPI(APIView):
