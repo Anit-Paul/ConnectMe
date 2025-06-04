@@ -43,3 +43,7 @@ class updateAPI(APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+def update_request(request):
+    user=MyUser.objects.get(email=request.user.email)
+    return render(request,'home/update_profile.html',{"user":user})
+
