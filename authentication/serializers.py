@@ -14,7 +14,7 @@ class userSerializer(serializers.ModelSerializer):
 
         # Extract image from validated_data if present
         image = validated_data.pop('image', None)  
-
+        banner = validated_data.pop('banner', None) 
         user = MyUser(
             email=validated_data['email'],
             username=validated_data['username'],
@@ -24,6 +24,7 @@ class userSerializer(serializers.ModelSerializer):
             address=validated_data.get('address', ''),
             # assign image here if present
             image=image,
+            banner=banner
         )
         user.set_password(validated_data['password'])
         user.save()

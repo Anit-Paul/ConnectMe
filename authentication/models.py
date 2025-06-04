@@ -29,6 +29,7 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     dob = models.DateField(null=True, blank=True)
     address = models.CharField(max_length=100, default="", blank=True)
     image=models.ImageField(upload_to='profile_images/', blank=True, null=True)
+    banner=models.ImageField(upload_to='profile_images/', blank=True, null=True)
     is_active = models.BooleanField(default=True) 
     is_admin = models.BooleanField(default=False)
 

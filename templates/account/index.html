@@ -3,6 +3,7 @@
 {% block title %}
 Create Account
 {% endblock title %}
+
 {% block style %}
 <style>
     body {
@@ -15,6 +16,7 @@ Create Account
         background-color: #ffffff;
         border-radius: 15px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        position: relative;
     }
 
     h2 {
@@ -22,34 +24,55 @@ Create Account
         margin-bottom: 30px;
     }
 
-    .profile-pic {
+    .banner-container {
+        position: relative;
+        width: 100%;
+        height: 150px;
+        background-color: #ddd;
+        border-radius: 15px 15px 0 0;
+        overflow: visible;
+        margin-bottom: 80px;
+        cursor: pointer;
+    }
+
+    .banner-pic {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
         display: block;
-        margin: 0 auto 10px;
+    }
+
+    .file-input,
+    input[type="file"] {
+        display: none !important;
+    }
+
+    .profile-pic {
+        position: absolute;
+        bottom: -60px;
+        left: 50%;
+        transform: translateX(-50%);
         width: 120px;
         height: 120px;
         border-radius: 50%;
+        border: 4px solid rgba(245, 245, 245, 0.595);
         object-fit: cover;
-        border: 2px solid #ccc;
         cursor: pointer;
+        background-color: #fff;
     }
 
-    .file-input {
-        display: none;
+    .form-control:focus {
+        box-shadow: none;
+        border-color: #0d6efd;
     }
 
-    .upload-label {
-        display: block;
-        text-align: center;
-        margin-bottom: 20px;
-        cursor: pointer;
-        color: #0d6efd;
-        font-size: 1.2rem;
+    .btn-primary {
+        width: 100%;
+        padding: 10px;
+        font-size: 1.1rem;
     }
 </style>
 {% endblock style %}
-
-
-
 
 {% block body %}
 <div class="container d-flex justify-content-center align-items-center min-vh-100">
@@ -57,74 +80,86 @@ Create Account
         <h2>Create Account</h2>
         <form method="POST" action="{% url 'signinAPI' %}" enctype="multipart/form-data">
             {% csrf_token %}
-            <!-- Profile Picture Upload -->
-            <label for="profile-image" style="cursor:pointer; display:block; text-align:center;">
-                <img src="https://via.placeholder.com/120" class="profile-pic" id="preview" />
-            </label>
-            <input type="file" accept="image/*" name="image" id="profile-image" class="file-input"
-                style="display:none;" />
-            <div style="text-align:center; margin-top:10px;">
-                <label for="profile-image" style="cursor:pointer; color:#0d6efd; font-size:24px;">
-                    <i class="fa-solid fa-camera"></i>
+
+            <!-- Banner Upload -->
+            <div class="banner-container">
+                <label for="banner-image" class="banner-container">
+                    <img src="https://via.placeholder.com/800x150?text=Banner+Image" id="banner-preview"
+                        class="banner-pic" />
                 </label>
+                <input type="file" accept="image/*" name="banner" id="banner-image" />
+
+                <!-- Profile Picture Upload -->
+                <label for="profile-image">
+                    <img src="https://via.placeholder.com/120" class="profile-pic" id="preview" />
+                </label>
+                <input type="file" name="image" id="profile-image" accept="image/*" />
             </div>
 
+            <!-- Full Name -->
+            <div class="mb-3">
+                <input type="text" name="username" class="form-control" placeholder="Full Name" required>
+            </div>
 
-            <!-- Rest of the Form -->
+            <!-- Email -->
             <div class="mb-3">
-                <label class="form-label">Email address</label>
-                <input type="email" class="form-control" placeholder="name@example.com" name="email" required />
+                <input type="email" name="email" class="form-control" placeholder="Email Address" required>
             </div>
+
+            <!-- Password -->
             <div class="mb-3">
-                <label class="form-label">Full Name</label>
-                <input type="text" class="form-control" placeholder="Your full name" name="username" required />
+                <input type="password" name="password" class="form-control" placeholder="Password" required>
             </div>
+
+            <!-- About/Bio -->
             <div class="mb-3">
-                <label class="form-label">Bio</label>
-                <textarea class="form-control" placeholder="A short bio about yourself" name="bio" rows="3"></textarea>
+                <textarea name="about" class="form-control" rows="3" placeholder="Tell us about yourself"></textarea>
             </div>
+
+            <!-- Address -->
             <div class="mb-3">
-                <label class="form-label">Password</label>
-                <input type="password" class="form-control" placeholder="Password" name="password" required />
+                <input type="text" name="address" class="form-control" placeholder="Address">
             </div>
+
+            <!-- Date of Birth -->
+            <div class="mb-3">
+                <label class="form-label">Date of Birth</label>
+                <input type="date" name="dob" class="form-control">
+            </div>
+
+            <!-- Gender -->
             <div class="mb-3">
                 <label class="form-label">Gender</label>
-                <select class="form-select" name="gender" required>
-                    <option value="">Select gender</option>
+                <select name="gender" class="form-select">
+                    <option value="" disabled selected>Select Gender</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                     <option value="Other">Other</option>
                 </select>
             </div>
-            <div class="mb-3">
-                <label class="form-label">Date of Birth</label>
-                <input type="date" class="form-control" name="dob" required />
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Address</label>
-                <input type="text" class="form-control" placeholder="Your address" name="address" required />
-            </div>
-            <div class="d-grid">
-                <button type="submit" class="btn btn-primary">Create Account</button>
-            </div>
-        </form>
-        <div class="text-center mt-3">
-            <a href="{% url 'login' %}" class="text-decoration-none text-primary">Already have an account? Log in</a>
-        </div>
 
+            <!-- Submit -->
+            <button type="submit" class="btn btn-primary">Create Account</button>
+        </form>
     </div>
 </div>
 
-<!-- Preview Image JS -->
+<!-- Preview script -->
 <script>
-    const fileInput = document.getElementById('profile-image');
-    const previewImg = document.getElementById('preview');
-
-    fileInput.onchange = (evt) => {
-        const [file] = fileInput.files;
+    document.getElementById("profile-image").addEventListener("change", function () {
+        const preview = document.getElementById("preview");
+        const file = this.files[0];
         if (file) {
-            previewImg.src = URL.createObjectURL(file);
+            preview.src = URL.createObjectURL(file);
         }
-    };
+    });
+
+    document.getElementById("banner-image").addEventListener("change", function () {
+        const preview = document.getElementById("banner-preview");
+        const file = this.files[0];
+        if (file) {
+            preview.src = URL.createObjectURL(file);
+        }
+    });
 </script>
 {% endblock body %}

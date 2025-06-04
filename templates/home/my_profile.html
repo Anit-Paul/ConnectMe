@@ -162,8 +162,8 @@
 
 <!-- Banner Section -->
 <div class="banner">
-  {% if user.banner_image %}
-  <img src="{{ user.banner_image.url }}" alt="Banner Image" />
+  {% if user.banner %}
+  <img src="{{ user.banner.url }}" alt="Banner Image" />
   {% endif %}
   <div class="banner-profile-pic">
     {% if user.image %}
