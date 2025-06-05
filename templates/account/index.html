@@ -17,11 +17,13 @@ Create Account
         border-radius: 15px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         position: relative;
+        overflow: visible;
     }
 
     h2 {
         text-align: center;
         margin-bottom: 30px;
+        font-weight: 600;
     }
 
     .banner-container {
@@ -30,14 +32,13 @@ Create Account
         height: 150px;
         background-color: #ddd;
         border-radius: 15px 15px 0 0;
-        overflow: visible;
-        margin-bottom: 80px;
+        overflow: hidden;
         cursor: pointer;
     }
 
     .banner-pic {
         width: 100%;
-        height: 150px;
+        height: 100%;
         object-fit: cover;
         display: block;
     }
@@ -47,18 +48,27 @@ Create Account
         display: none !important;
     }
 
-    .profile-pic {
+    .profile-pic-label {
         position: absolute;
-        bottom: -60px;
+        top: 100px; /* Pushes the circle to overlap the banner bottom */
         left: 50%;
         transform: translateX(-50%);
         width: 120px;
         height: 120px;
         border-radius: 50%;
-        border: 4px solid rgba(245, 245, 245, 0.595);
-        object-fit: cover;
-        cursor: pointer;
         background-color: #fff;
+        border: 4px solid #fff;
+        overflow: hidden;
+        cursor: pointer;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+        z-index: 10;
+    }
+
+    .profile-pic {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
     }
 
     .form-control:focus {
@@ -71,6 +81,11 @@ Create Account
         padding: 10px;
         font-size: 1.1rem;
     }
+
+    .relative-wrapper {
+        position: relative;
+        margin-bottom: 80px; /* space for profile image overlap */
+    }
 </style>
 {% endblock style %}
 
@@ -81,20 +96,21 @@ Create Account
         <form method="POST" action="{% url 'signinAPI' %}" enctype="multipart/form-data">
             {% csrf_token %}
 
-            <!-- Banner Upload -->
-            <div class="banner-container">
-                <label for="banner-image" class="banner-container">
-                    <img src="https://via.placeholder.com/800x150?text=Banner+Image" id="banner-preview"
-                        class="banner-pic" />
+            <!-- Wrapper to allow overlap -->
+            <div class="relative-wrapper">
+                <!-- Banner Upload -->
+                <div class="banner-container" onclick="document.getElementById('bannerInput').click()">
+                    <img id="bannerPreview" class="banner-pic" />
+                </div>
+                
+                <!-- Profile Upload -->
+                <label for="profileInput" class="profile-pic-label">
+                    <img src="https://via.placeholder.com/120" id="profilePreview" class="profile-pic" />
                 </label>
-                <input type="file" accept="image/*" name="banner" id="banner-image" />
-
-                <!-- Profile Picture Upload -->
-                <label for="profile-image">
-                    <img src="https://via.placeholder.com/120" class="profile-pic" id="preview" />
-                </label>
-                <input type="file" name="image" id="profile-image" accept="image/*" />
             </div>
+
+            <input type="file" name="banner" id="bannerInput" accept="image/*" />
+            <input type="file" name="image" id="profileInput" accept="image/*" />
 
             <!-- Full Name -->
             <div class="mb-3">
@@ -113,7 +129,7 @@ Create Account
 
             <!-- About/Bio -->
             <div class="mb-3">
-                <textarea name="about" class="form-control" rows="3" placeholder="Tell us about yourself"></textarea>
+                <textarea name="bio" class="form-control" rows="3" placeholder="Tell us about yourself"></textarea>
             </div>
 
             <!-- Address -->
@@ -138,28 +154,30 @@ Create Account
                 </select>
             </div>
 
-            <!-- Submit -->
             <button type="submit" class="btn btn-primary">Create Account</button>
         </form>
     </div>
 </div>
 
-<!-- Preview script -->
 <script>
-    document.getElementById("profile-image").addEventListener("change", function () {
-        const preview = document.getElementById("preview");
-        const file = this.files[0];
-        if (file) {
-            preview.src = URL.createObjectURL(file);
-        }
-    });
+    function previewImage(event, previewId) {
+    const input = event.target;
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            document.getElementById(previewId).src = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
 
-    document.getElementById("banner-image").addEventListener("change", function () {
-        const preview = document.getElementById("banner-preview");
-        const file = this.files[0];
-        if (file) {
-            preview.src = URL.createObjectURL(file);
-        }
-    });
+// Attach event listeners
+document.getElementById('bannerInput').addEventListener('change', function (e) {
+    previewImage(e, 'bannerPreview');
+});
+
+document.getElementById('profileInput').addEventListener('change', function (e) {
+    previewImage(e, 'profilePreview');
+});
 </script>
 {% endblock body %}
