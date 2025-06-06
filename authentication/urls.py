@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from .views import signinAPI,loginAPI,signin,login,forget_password,set_new_password,otpVerification,forgetPasswordAPI
+from .views import signinAPI,loginAPI,signin,login,forget_password,set_new_password,otpVerification,forgetPasswordAPI,logoutAPI
 otp=otpVerification()
 urlpatterns = [
     path("",login,name="login"),
@@ -27,5 +27,6 @@ urlpatterns = [
     path("forgetPassword/",forgetPasswordAPI.as_view(),name="forgetPassword"),
     path("set_new_password/",set_new_password,name="set_new_password"),
     path("signinAPI/",signinAPI.as_view(),name="signinAPI"),
-    path("loginAPI/",loginAPI.as_view(),name="loginAPI")
+    path("loginAPI/",loginAPI.as_view(),name="loginAPI"),
+    path("logoutAPI/",logoutAPI,name="log_out")
 ]

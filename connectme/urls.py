@@ -24,5 +24,5 @@ urlpatterns = [
     path('social_features/',include('social_features.urls')),
     path("",include('authentication.urls')),
     path("home/",include('home.urls')),
-    path("auth/",include('authentication.urls'))
+    #path("auth/",include('authentication.urls'))
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) #media management

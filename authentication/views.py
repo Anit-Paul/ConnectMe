@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -10,6 +10,8 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from .mail import Mail
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import login as django_login
+from django.contrib.auth import logout
+from home.urls import *
 
 class otpVerification:
     def __init__(self):
@@ -50,13 +52,29 @@ def set_new_password(request):
 class signinAPI(APIView):
     parser_classes = (MultiPartParser, FormParser)
     def post(self, request):
-        serializer = userSerializer(data=request.data)  # add files here
+        serializer = userSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()  
-            return Response({"data": serializer.data, "message": "Data saved successfully!"}, status=status.HTTP_201_CREATED)
+            serializer.save()
+
+            # ✅ Authenticate the user
+            email = request.data['email']  # or 'email' if you're using that
+            password = request.data['password']  # must be plain text
+
+            user = authenticate(request, email=email, password=password)
+
+            if user is not None:
+                django_login(request, user)  # ✅ Log in the newly created user
+                return redirect('homeAPI')
+            else:
+                # ❗ You need to handle authentication failure
+                return Response({"error": "User created, but login failed. Check username/password or serializer logic."},
+                                status=status.HTTP_401_UNAUTHORIZED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+def logoutAPI(request):
+    logout(request)
+    return redirect("login")
 
 class loginAPI(APIView):
     def post(self,request):
@@ -66,7 +84,7 @@ class loginAPI(APIView):
         if user is not None:
             django_login(request, user)  # ✅ This creates a session
             token, _ = Token.objects.get_or_create(user=user)
-            return Response({"message":"Login Successful",'token':token.key})
+            return redirect('homeAPI')
         else:
             return Response({"message":"Login failed"})
         
